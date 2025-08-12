@@ -14,6 +14,7 @@ import { Disegni } from './collections/Disegni'
 import { ComingSoon } from './globals/ComingSoon'
 import { Homepage } from './globals/Homepage'
 import { About } from './globals/About'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -39,8 +40,18 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: true, // Optional, defaults to true
+      // Specify which collections should use Vercel Blob
+      collections: {
+        media: true,
+        media: {
+          prefix: 'my-prefix',
+        },
+      },
+      // Token provided by Vercel once Blob storage is added to your Vercel project
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
   ],
   cors: {
     origins: [process.env.APP_URL || ''],
