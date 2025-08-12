@@ -12,8 +12,8 @@ import { Media } from './collections/Media'
 import { Categorie } from './collections/Categorie'
 import { Disegni } from './collections/Disegni'
 import { ComingSoon } from './globals/ComingSoon'
-import { About } from './globals/about'
 import { Homepage } from './globals/Homepage'
+import { About } from './globals/About'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
