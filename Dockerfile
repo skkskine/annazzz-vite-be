@@ -3,28 +3,28 @@ FROM node:20-alpine AS base
 # Installa dipendenze necessarie
 RUN apk add --no-cache libc6-compat
 
+# Installa pnpm globalmente
+RUN npm install -g pnpm
+
 WORKDIR /app
 
-# Forza l'uso di npm
-ENV PAYLOAD_PACKAGE_MANAGER=npm
-
 # Copia file di dipendenze
-COPY package*.json ./
+COPY package*.json pnpm-lock.yaml* ./
 
-# Installa dipendenze
-RUN npm ci
+# Installa dipendenze con pnpm
+RUN pnpm install --frozen-lockfile
 
 # Copia tutto il codice
 COPY . .
 
 # Genera i tipi di Payload
-RUN npm run payload generate:types
+RUN pnpm payload generate:types
 
 # Build dell'applicazione
-RUN npm run build
+RUN pnpm build
 
 # Esponi la porta
 EXPOSE 3222
 
 # Avvia l'applicazione
-CMD ["npm", "run", "start"]
+CMD ["pnpm", "start"]
