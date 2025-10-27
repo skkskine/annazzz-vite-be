@@ -37,9 +37,16 @@ services:
       PORT: 3222
     ports:
       - '3222:3222'
+    networks:
+      - traefik
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.payload.rule=Host(`be.annazampatti.com`)'
       - 'traefik.http.routers.payload.entrypoints=websecure'
       - 'traefik.http.routers.payload.tls.certresolver=myresolver'
+      - 'traefik.http.services.payload.loadbalancer.server.port=3222'
     restart: unless-stopped
+
+networks:
+  traefik:
+    external: true
