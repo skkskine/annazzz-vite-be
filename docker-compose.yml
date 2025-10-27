@@ -1,43 +1,43 @@
-version: '3'
+version: "3.9"
 
 services:
   payload:
-    image: node:18-alpine
-    ports:
-      - '3000:3000'
+    image: node:20-alpine
+    container_name: payload
+    working_dir: /app
     volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
-    depends_on:
-      - mongo
-      # - postgres
-    env_file:
-      - .env
-
-  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
-  mongo:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
-    volumes:
-      - data:/data/db
-    logging:
-      driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
-
-volumes:
-  data:
-  # pgdata:
-  node_modules:
+      - ./:/app
+    command: sh -c "npm install && npm run build && npm run start"
+    environment:
+      NODE_ENV: production
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      MONGODB_URI: ${MONGODB_URI}
+      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN}
+      APP_URL: ${APP_URL}
+      DATABASE_URI: ${DATABASE_URI}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGHOST_UNPOOLED: ${PGHOST_UNPOOLED}
+      NEXT_PUBLIC_STACK_PROJECT_ID: ${NEXT_PUBLIC_STACK_PROJECT_ID}
+      PGUSER: ${PGUSER}
+      POSTGRES_URL_NO_SSL: ${POSTGRES_URL_NO_SSL}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY: ${NEXT_PUBLIC_STACK_PUBLISHABLE_CLIENT_KEY}
+      NEON_PROJECT_ID: ${NEON_PROJECT_ID}
+      POSTGRES_URL: ${POSTGRES_URL}
+      POSTGRES_PRISMA_URL: ${POSTGRES_PRISMA_URL}
+      DATABASE_URL_UNPOOLED: ${DATABASE_URL_UNPOOLED}
+      POSTGRES_URL_NON_POOLING: ${POSTGRES_URL_NON_POOLING}
+      PGHOST: ${PGHOST}
+      POSTGRES_USER: ${POSTGRES_USER}
+      STACK_SECRET_SERVER_KEY: {STACK_SECRET_SERVER_KEY}
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.payload.rule=Host(`be.annazampatti.com`)"
+      - "traefik.http.routers.payload.entrypoints=websecure"
+      - "traefik.http.routers.payload.tls.certresolver=myresolver"
+      - "traefik.docker.network=traefik"
