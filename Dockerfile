@@ -5,6 +5,9 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
+# Forza l'uso di npm
+ENV PAYLOAD_PACKAGE_MANAGER=npm
+
 # Copia file di dipendenze
 COPY package*.json ./
 
