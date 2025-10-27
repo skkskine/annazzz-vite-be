@@ -11,7 +11,6 @@ services:
     environment:
       NODE_ENV: production
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-      MONGODB_URI: ${MONGODB_URI}
       BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN}
       APP_URL: ${APP_URL}
       DATABASE_URI: ${DATABASE_URI}
