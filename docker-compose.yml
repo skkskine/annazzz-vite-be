@@ -42,5 +42,4 @@ services:
       - 'traefik.http.routers.payload.rule=Host(`be.annazampatti.com`)'
       - 'traefik.http.routers.payload.entrypoints=websecure'
       - 'traefik.http.routers.payload.tls.certresolver=myresolver'
-      - 'traefik.http.services.payload.loadbalancer.server.port=3000'
     restart: unless-stopped
