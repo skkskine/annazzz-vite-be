@@ -34,9 +34,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       STACK_SECRET_SERVER_KEY: ${STACK_SECRET_SERVER_KEY}
       DATABASE_URL: ${DATABASE_URL}
-      PORT: 3000
+      PORT: 3222
     ports:
-      - '3000:3000'
+      - '3222:3222'
     labels:
       - 'traefik.enable=true'
       - 'traefik.http.routers.payload.rule=Host(`be.annazampatti.com`)'
